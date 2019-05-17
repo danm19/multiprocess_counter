@@ -5,6 +5,26 @@
 #include <sys/mman.h> 
 #include <sys/wait.h>
 
+int verifica_primo(int x){
+
+	int j = 2, fail = 0, aux = 0;
+
+	while (j < 10 && fail == 0){ 
+	      
+	      if (((x % j == 0) && (j != x)) || (x == 1)){ 
+		    fail = 1; 
+		    aux = 0;
+	      }
+	      else if (j == 9)		
+		    aux = 1;			
+
+	      j++;				
+
+	 }
+
+         return aux;
+}
+
 int main() {
   
 	  int qtde_num, *n ,i = 0, j = 2, k, fail = 0, num[64], num_primos, *vet_aux, maior = 0, stop = 0, ok = 0;
@@ -27,38 +47,28 @@ int main() {
           for (i = 0; i < (qtde_num); i++)
 	      vet_aux[i] = -1;
 	
-	  for (k = 0; k < qtde_num; k++){
+	  while (k < qtde_num){
 
 	      if (vet_aux[k] == -1){
 
-	      filho[k] = fork();
+	      	    filho[k] = fork();
 
-		      if (filho[k] == 0){
+		    if (filho[k] == 0){
 			
-			 while (j < 10 && fail == 0){ 
-			      if (((num[k] % j == 0) && (j != num[k])) || (num[k] == 1)){ 
-				    fail = 1; 
-				    vet_aux[k] = 0;
-
-			      }
-			      else if (j == 9)		
-				    vet_aux[k] = 1;			
- 
-			      j++;				
-	
-			 }
-
+			 vet_aux[k] = verifica_primo(num[k]);
 		         exit(0);
        
 		    }
 
 	      } 
 
-	      if (k == 2){
-		 for (i = 0; i <= k; i++) 		
-		     waitpid(filho[i], NULL, 0);
+	      if (k == 2 && filho[k] == 0){		
+		 waitpid(filho[k], NULL, 0);
+		 k = 0;     
 	      }
 	 
+	      k++;
+
 	}
 
 	for (i = 0; i < (qtde_num); i++)
