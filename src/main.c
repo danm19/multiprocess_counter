@@ -18,7 +18,6 @@ int main() {
 	  qtde_num = 0;
 	
 	  while (scanf("%d", &num[i]) != (-1)){    
-	   //    printf("numero: %d\n", num[i]);
 	       i++;    
 	       (qtde_num)++;
 	  }   	  
@@ -36,7 +35,7 @@ int main() {
 
 		      if (filho[k] == 0){
 			
-			 while (j < 10 && fail == 0){printf ("Processo: %d\n", k); 
+			 while (j < 10 && fail == 0){ 
 			      if (((num[k] % j == 0) && (j != num[k])) || (num[k] == 1)){ 
 				    fail = 1; 
 				    vet_aux[k] = 0;
@@ -61,7 +60,6 @@ int main() {
 	      }
 	 
 	}
-
 
 	for (i = 0; i < (qtde_num); i++)
 	    waitpid(filho[i], NULL, 0);
