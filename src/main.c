@@ -27,14 +27,13 @@ int verifica_primo(int x){
 
 int main() {
   
-	  int qtde_num, *n ,i = 0, j = 2, k, fail = 0, num[64], num_primos, *vet_aux, maior = 0, stop = 0, ok = 0;
-	  char numero, *recebnum; 
+	  int qtde_num, i = 0, k = 0, indice = 0, num[64], num_primos = 0, *vet_aux; 
 
 	  int protection = PROT_READ | PROT_WRITE;
 	  int visibility = MAP_SHARED | MAP_ANON;
 
 	  pid_t filho[3];	   
-
+	  
 	  qtde_num = 0;
 	
 	  while (scanf("%d", &num[i]) != (-1)){    
@@ -47,37 +46,37 @@ int main() {
           for (i = 0; i < (qtde_num); i++)
 	      vet_aux[i] = -1;
 	
-	  while (k < qtde_num){
-
-	      if (vet_aux[k] == -1){
-
-	      	    filho[k] = fork();
-
-		    if (filho[k] == 0){
-			
-			 vet_aux[k] = verifica_primo(num[k]);
-		         exit(0);
-       
-		    }
-
-	      } 
-
-	      if (k == 2 && filho[k] == 0){		
-		 waitpid(filho[k], NULL, 0);
-		 k = 0;     
+	  k = 0;
+	  
+	  while (indice < qtde_num){
+	      	    
+		  filho[k] = fork();
+		  
+		  if (filho[k] == 0){
+		    if (vet_aux[indice] == -1)
+		      vet_aux[indice] = verifica_primo(num[indice]);
+		    exit(0);
+		  }
+    
+	      if (k == 2){
+		 for (i = 0; i < k; i++)
+		    waitpid(filho[k], NULL, 0);
+		 k = 0 ;     
 	      }
-	 
-	      k++;
 
+	      indice++;  
+	      k++;
 	}
 
+	num_primos = 0;	
+	
 	for (i = 0; i < (qtde_num); i++)
-	    waitpid(filho[i], NULL, 0);
+	      waitpid(filho[i], NULL, 0);
 	       
 	for (i = 0; i < (qtde_num); i++)
-	    if (vet_aux[i] == 1)
-		num_primos++;
-	
+	      if (vet_aux[i] == 1)
+		 num_primos++;
+
         printf ("%d\n", num_primos);
 
 
